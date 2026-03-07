@@ -28,7 +28,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -123,6 +135,31 @@ export default function AdminOrders() {
         setSelectedOrder(data);
       }
       toast({ title: "Status Updated", description: `Order is now ${data.status}` });
+    }
+  });
+
+  const deleteOrderMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const adminPin = localStorage.getItem('admin_pin') || '';
+      const userStr = localStorage.getItem('user');
+      const token = userStr ? JSON.parse(userStr).token : '';
+
+      const res = await fetch(`${API_BASE_URL}/api/orders/${id}`, {
+        method: "DELETE",
+        headers: {
+          "x-admin-pin": adminPin,
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (!res.ok) throw new Error("Failed to delete order");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-orders"] });
+      toast({ title: "Order Deleted", description: "The order has been removed successfully." });
+    },
+    onError: (err: any) => {
+      toast({ title: "Delete Failed", description: err.message, variant: "destructive" });
     }
   });
 
@@ -259,6 +296,35 @@ export default function AdminOrders() {
                         <Eye className="w-4 h-4" />
                         <span className="hidden sm:inline">View</span>
                       </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 gap-1.5 text-destructive hover:text-destructive hover:bg-destructive/10 font-bold"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            <span className="hidden sm:inline">Delete</span>
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="rounded-2xl border-none shadow-2xl">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle className="font-display text-xl font-bold">Are you absolutely sure?</AlertDialogTitle>
+                            <AlertDialogDescription className="text-muted-foreground">
+                              This action cannot be undone. This will permanently delete the order for <b>{o.customerDetails.email}</b> from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter className="gap-2 pt-4">
+                            <AlertDialogCancel className="rounded-xl border-2">Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => deleteOrderMutation.mutate(o._id)}
+                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90 rounded-xl font-bold"
+                            >
+                              Delete Order
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </td>
                   </tr>
                 ))
