@@ -8,6 +8,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
@@ -31,6 +32,10 @@ import AdminEditProduct from "./pages/admin/AdminEditProduct";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminPartners from "./pages/admin/AdminPartners";
 import AdminUsers from "./pages/admin/AdminUsers";
+import ReturnRefundPolicy from "./pages/policies/ReturnRefundPolicy";
+import DeliveryPolicy from "./pages/policies/DeliveryPolicy";
+import PrivacyPolicy from "./pages/policies/PrivacyPolicy";
+import TermsConditions from "./pages/policies/TermsConditions";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +48,7 @@ const App = () => (
           <Sonner />
           <ImageKitProvider urlEndpoint="https://ik.imagekit.io/mn97a0qq9f">
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 {/* Store routes */}
                 <Route path="/" element={<><Navbar /><Index /><Footer /></>} />
@@ -56,6 +62,12 @@ const App = () => (
                 <Route path="/login" element={<><Navbar /><Login /><Footer /></>} />
                 <Route path="/signup" element={<><Navbar /><Signup /><Footer /></>} />
                 <Route path="/account" element={<><Navbar /><Account /><Footer /></>} />
+
+                {/* Policy routes */}
+                <Route path="/return-refund-policy" element={<ReturnRefundPolicy />} />
+                <Route path="/delivery-policy" element={<DeliveryPolicy />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-conditions" element={<TermsConditions />} />
 
                 {/* Admin routes */}
                 <Route path="/admin" element={<AdminLayout />}>

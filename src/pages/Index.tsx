@@ -301,7 +301,7 @@ export default function Index() {
                 <div className="text-xs font-bold uppercase tracking-widest opacity-80">Hand-Pounded</div>
               </div>
               <div className="p-6 bg-white/10 backdrop-blur-md rounded-3xl border border-white/20">
-                <div className="text-4xl font-bold mb-1">Pura</div>
+                <div className="text-4xl font-bold mb-1">Pure</div>
                 <div className="text-xs font-bold uppercase tracking-widest opacity-80">Ingredients</div>
               </div>
             </div>

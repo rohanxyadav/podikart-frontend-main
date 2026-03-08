@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getWhatsAppLink } from "@/data/products";
-import { Star, ChevronLeft, ShoppingBag, ShoppingCart, Leaf, Shield, Clock, HelpCircle, MessageSquare, User } from "lucide-react";
+import { Star, ChevronLeft, ShoppingBag, ShoppingCart, Leaf, Shield, Clock, HelpCircle, MessageSquare, User, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Image } from "@imagekit/react";
@@ -24,7 +24,6 @@ export default function ProductDetail() {
     },
     enabled: !!slug
   });
-  const [selectedPack, setSelectedPack] = useState<"trial" | "value">("value");
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   const { toast } = useToast();
@@ -40,8 +39,8 @@ export default function ProductDetail() {
       navigate("/login");
       return;
     }
-    addToCart(product, selectedPack, quantity);
-    toast({ title: `${product.name} added to cart!`, description: `${packLabel} × ${quantity}` });
+    addToCart(product, quantity);
+    toast({ title: `${product.name} added to cart!`, description: `${product.weight}g × ${quantity}` });
   };
 
   if (isLoading) {
@@ -61,8 +60,9 @@ export default function ProductDetail() {
     );
   }
 
-  const price = selectedPack === "trial" ? product.trialPrice : product.valuePrice;
-  const packLabel = selectedPack === "trial" ? "Trial Pack" : "Value Pack";
+  const discountedPrice = product.trialPrice;
+  const originalPrice = product.valuePrice;
+  const discountPercent = Math.round(((originalPrice - discountedPrice) / originalPrice) * 100);
 
   return (
     <main className="pt-24 pb-20">
@@ -79,7 +79,14 @@ export default function ProductDetail() {
 
           {/* Details */}
           <div>
-            <span className="text-primary font-semibold text-xs tracking-[0.15em] uppercase">{product.category.replace(/-/g, " ")}</span>
+            <div className="flex items-center justify-between">
+              <span className="text-primary font-semibold text-xs tracking-[0.15em] uppercase">{product.category.replace(/-/g, " ")}</span>
+              {discountPercent > 0 && (
+                <span className="bg-primary text-primary-foreground text-[10px] font-bold px-2 py-1 rounded-full animate-pulse">
+                  {discountPercent}% OFF
+                </span>
+              )}
+            </div>
             <h1 className="font-display text-3xl md:text-4xl font-bold mt-2 mb-2">{product.name}</h1>
 
             <div className="flex items-center gap-1 mb-4">
@@ -89,32 +96,18 @@ export default function ProductDetail() {
               <span className="text-sm text-muted-foreground ml-2">{product.rating} ({product.reviewCount} reviews)</span>
             </div>
 
-            <p className="text-muted-foreground leading-relaxed mb-6">{product.description}</p>
-
-            {/* Pack Selection */}
-            <div className="mb-6">
-              <label className="text-sm font-semibold text-foreground mb-2 block">Select Pack</label>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setSelectedPack("trial")}
-                  className={`px-5 py-3 rounded-lg border text-sm font-medium transition-all ${selectedPack === "trial"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50"
-                    }`}
-                >
-                  Trial Pack – ₹{product.trialPrice}
-                </button>
-                <button
-                  onClick={() => setSelectedPack("value")}
-                  className={`px-5 py-3 rounded-lg border text-sm font-medium transition-all ${selectedPack === "value"
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:border-primary/50"
-                    }`}
-                >
-                  Value Pack – ₹{product.valuePrice}
-                </button>
+            {/* Pricing Section */}
+            <div className="mb-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+              <div className="flex items-baseline gap-3 mb-1">
+                <span className="text-4xl font-display font-bold text-foreground">₹{discountedPrice}</span>
+                <span className="text-lg text-muted-foreground line-through opacity-60">₹{originalPrice}</span>
+              </div>
+              <div className="text-sm font-medium text-primary flex items-center gap-2">
+                <Package className="w-4 h-4" /> Net Weight: {product.weight}g
               </div>
             </div>
+
+            <p className="text-muted-foreground leading-relaxed mb-6">{product.description}</p>
 
             {/* Quantity */}
             <div className="mb-6">
@@ -123,7 +116,7 @@ export default function ProductDetail() {
                 <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-lg hover:border-primary">−</button>
                 <span className="font-semibold w-8 text-center">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 rounded-lg border border-border flex items-center justify-center text-lg hover:border-primary">+</button>
-                <span className="text-muted-foreground text-sm ml-3">Total: ₹{price * quantity}</span>
+                <span className="text-muted-foreground text-sm ml-3 italic">Total: ₹{discountedPrice * quantity}</span>
               </div>
             </div>
 
@@ -131,9 +124,8 @@ export default function ProductDetail() {
             <div className="flex gap-3">
               <Button size="lg" onClick={handleAddToCart} className="flex-1 gold-gradient text-primary-foreground font-bold text-base shadow-xl hover:opacity-90 transition-opacity">
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                Add to Cart – ₹{price * quantity}
+                Add to Cart – ₹{discountedPrice * quantity}
               </Button>
-
             </div>
 
             {/* Quick Info */}

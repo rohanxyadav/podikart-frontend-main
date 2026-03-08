@@ -13,7 +13,7 @@ const fadeIn = {
 
 const contactInfo = [
   { icon: Phone, label: "Phone", value: "+91 79899 07021" },
-  { icon: Mail, label: "Email", value: "hello@podikart.com" },
+  { icon: Mail, label: "Email", value: "podikart.lmt@gmail.com" },
   { icon: MapPin, label: "Location", value: "Hyderabad, Telangana, India" },
   { icon: Clock, label: "Working Hours", value: "Mon – Sat, 9 AM – 7 PM" },
 ];

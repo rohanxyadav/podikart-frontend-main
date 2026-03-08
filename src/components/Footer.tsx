@@ -33,35 +33,36 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Policies */}
+          <div>
+            <h4 className="font-display text-lg font-semibold mb-4 text-primary">Policies</h4>
+            <div className="flex flex-col gap-2">
+              {[
+                { label: "Return & Refund Policy", to: "/return-refund-policy" },
+                { label: "Delivery Policy", to: "/delivery-policy" },
+                { label: "Privacy Policy", to: "/privacy-policy" },
+                { label: "Terms and Conditions", to: "/terms-conditions" },
+              ].map((l) => (
+                <Link key={l.to} to={l.to} className="text-sm text-secondary-foreground/70 hover:text-primary transition-colors">
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
           {/* Contact */}
           <div>
             <h4 className="font-display text-lg font-semibold mb-4 text-primary">Contact Us</h4>
             <div className="flex flex-col gap-3 text-sm text-secondary-foreground/70">
               <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-primary" /> +91 79899 07021</span>
-              <span className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> hello@podikart.com</span>
+              <span className="flex items-center gap-2"><Mail className="w-4 h-4 text-primary" /> podikart.lmt@gmail.com</span>
               <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Hyderabad, India</span>
             </div>
-          </div>
-
-          {/* WhatsApp CTA */}
-          <div>
-            <h4 className="font-display text-lg font-semibold mb-4 text-primary">Order via WhatsApp</h4>
-            <p className="text-sm text-secondary-foreground/70 mb-4">
-              Quick and easy ordering through WhatsApp. Just tap the button!
-            </p>
-            <a
-              href="https://wa.me/917989907021?text=Hi!%20I%27d%20like%20to%20order%20from%20Podikart."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block gold-gradient text-primary-foreground font-semibold px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-opacity text-sm"
-            >
-              💬 Chat & Order
-            </a>
           </div>
         </div>
 
         <div className="border-t border-secondary-foreground/10 mt-12 pt-8 text-center text-sm text-secondary-foreground/50">
-          © 2026 Podikart. All rights reserved. Made with ❤️ in India.
+          © 2026 Podikart. All rights reserved
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ChatModal from "@/components/ChatModal";
+import OrderTrackingModal from "@/components/OrderTrackingModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,8 @@ export default function Account() {
   const { user, isAuthenticated, logout } = useAuth();
   const [chatOrder, setChatOrder] = useState<any>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [trackingOrder, setTrackingOrder] = useState<any>(null);
+  const [isTrackingOpen, setIsTrackingOpen] = useState(false);
 
   const { data: myOrders = [], isLoading: ordersLoading } = useQuery({
     queryKey: ["my-orders"],
@@ -180,9 +183,9 @@ export default function Account() {
                           </div>
                           <div className="flex items-center gap-3">
                             <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${order.status === "Done" ? "bg-green-500 text-white" :
-                                order.status === "Cancelled" ? "bg-red-500 text-white" :
-                                  order.status === "Pending" ? "bg-amber-500 text-white" :
-                                    "bg-blue-500 text-white"
+                              order.status === "Cancelled" ? "bg-red-500 text-white" :
+                                order.status === "Pending" ? "bg-amber-500 text-white" :
+                                  "bg-blue-500 text-white"
                               }`}>
                               {order.status}
                             </span>
@@ -203,7 +206,12 @@ export default function Account() {
                             <div className="w-1 h-1 bg-muted-foreground/30 rounded-full" />
                             <span className="text-sm font-bold gold-text">₹{order.totalPrice}</span>
                           </div>
-                          <Button variant="ghost" size="sm" className="text-xs font-bold group-hover:text-primary transition-colors">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-xs font-bold group-hover:text-primary transition-colors"
+                            onClick={() => { setTrackingOrder(order); setIsTrackingOpen(true); }}
+                          >
                             Track Details <ChevronRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </div>
@@ -222,6 +230,14 @@ export default function Account() {
           isOpen={isChatOpen}
           onClose={() => setIsChatOpen(false)}
           order={chatOrder}
+        />
+      )}
+
+      {trackingOrder && (
+        <OrderTrackingModal
+          isOpen={isTrackingOpen}
+          onClose={() => setIsTrackingOpen(false)}
+          order={trackingOrder}
         />
       )}
     </>

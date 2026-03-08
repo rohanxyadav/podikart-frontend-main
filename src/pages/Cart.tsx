@@ -23,8 +23,7 @@ export default function Cart() {
           name: i.product.name,
           quantity: i.quantity,
           image: i.product.image,
-          price: i.pack === "trial" ? i.product.trialPrice : i.product.valuePrice,
-          pack: i.pack,
+          price: i.product.trialPrice, // Discounted Price
           product: (i.product as any)._id || i.product.id
         })),
         shippingAddress: {
@@ -67,7 +66,7 @@ export default function Cart() {
 
       const lines = items.map(
         (i) =>
-          `• ${i.product.name} (${i.pack === "trial" ? "Trial Pack" : "Value Pack"}) x${i.quantity} (Price: ₹${i.pack === "trial" ? i.product.trialPrice : i.product.valuePrice})`
+          `• ${i.product.name} (${i.product.weight}g) x${i.quantity} (Price: ₹${i.product.trialPrice})`
       );
 
       const message = `Hi! I'd like to place an order from Podikart:
@@ -103,7 +102,6 @@ Please confirm my order.`;
   };
 
   if (items.length === 0) {
-    // ... empty cart UI ...
     return (
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4 max-w-2xl text-center py-20">
@@ -128,25 +126,32 @@ Please confirm my order.`;
 
         <div className="space-y-4 mb-8">
           {items.map((item) => {
-            const price = item.pack === "trial" ? item.product.trialPrice : item.product.valuePrice;
+            const discountedPrice = item.product.trialPrice;
+            const originalPrice = item.product.valuePrice;
+            const productId = (item.product as any)._id || item.product.id;
+
             return (
-              <div key={`${item.product.id}-${item.pack}`} className="flex items-center gap-4 bg-card border border-border rounded-xl p-4">
+              <div key={productId} className="flex items-center gap-4 bg-card border border-border rounded-xl p-4">
                 <img src={item.product.image} alt={item.product.name} className="w-20 h-20 object-cover rounded-lg" />
                 <div className="flex-1 min-w-0">
                   <h3 className="font-display font-bold text-foreground truncate">{item.product.name}</h3>
-                  <p className="text-sm text-muted-foreground">{item.pack === "trial" ? "Trial Pack" : "Value Pack"} – ₹{price}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-primary">₹{discountedPrice}</span>
+                    <span className="text-xs text-muted-foreground line-through">₹{originalPrice}</span>
+                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-bold uppercase">{item.product.weight}g</span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button onClick={() => updateQuantity(item.product.id, item.pack, item.quantity - 1)} className="w-8 h-8 rounded-lg border border-border flex items-center justify-center hover:border-primary">
+                  <button onClick={() => updateQuantity(productId, item.quantity - 1)} className="w-8 h-8 rounded-lg border border-border flex items-center justify-center hover:border-primary">
                     <Minus className="w-3 h-3" />
                   </button>
                   <span className="font-semibold w-6 text-center text-sm">{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.product.id, item.pack, item.quantity + 1)} className="w-8 h-8 rounded-lg border border-border flex items-center justify-center hover:border-primary">
+                  <button onClick={() => updateQuantity(productId, item.quantity + 1)} className="w-8 h-8 rounded-lg border border-border flex items-center justify-center hover:border-primary">
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>
-                <span className="font-bold text-foreground w-16 text-right">₹{price * item.quantity}</span>
-                <button onClick={() => removeFromCart(item.product.id, item.pack)} className="text-muted-foreground hover:text-destructive">
+                <span className="font-bold text-foreground w-16 text-right">₹{discountedPrice * item.quantity}</span>
+                <button onClick={() => removeFromCart(productId)} className="text-muted-foreground hover:text-destructive">
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

@@ -21,6 +21,7 @@ export interface Product {
   benefits: string[];
   usage: string[];
   shelfLife: string;
+  weight: number;
   featured: boolean;
 }
 
@@ -41,6 +42,7 @@ export const products: Product[] = [
     benefits: ["High in Protein", "Rich in Iron", "No Preservatives", "Low Oil Content"],
     usage: ["Mix with hot rice and ghee", "Sprinkle on idli or dosa", "Use as a dry chutney", "Add to buttermilk rice"],
     shelfLife: "3 months",
+    weight: 250,
     featured: true,
   },
   {
@@ -59,6 +61,7 @@ export const products: Product[] = [
     benefits: ["Rich in Calcium", "Good for Bones", "Heart Healthy", "No Artificial Colors"],
     usage: ["Mix with steamed rice and sesame oil", "Pair with dosa and ghee", "Add to roti rolls"],
     shelfLife: "3 months",
+    weight: 200,
     featured: true,
   },
   {
@@ -77,6 +80,7 @@ export const products: Product[] = [
     benefits: ["High in Protein", "Energy Boosting", "Rich in Healthy Fats", "No MSG"],
     usage: ["Mix with rice and oil", "Stuff in dosa", "Sprinkle on upma", "Mix with curd rice"],
     shelfLife: "2 months",
+    weight: 250,
     featured: true,
   },
   {
@@ -95,6 +99,7 @@ export const products: Product[] = [
     benefits: ["Rich in Iron", "Good for Hair", "Aids Digestion", "Antioxidant Rich"],
     usage: ["Mix with hot rice and ghee", "Pair with idli", "Add to buttermilk"],
     shelfLife: "2 months",
+    weight: 200,
     featured: true,
   },
   {
@@ -113,6 +118,7 @@ export const products: Product[] = [
     benefits: ["Rich in Omega-3", "High Fiber", "Heart Healthy", "Weight Management"],
     usage: ["Mix with rice and oil", "Add to smoothies", "Sprinkle on salads", "Mix with yogurt"],
     shelfLife: "2 months",
+    weight: 250,
     featured: true,
   },
   {
@@ -131,6 +137,7 @@ export const products: Product[] = [
     benefits: ["Protein Rich", "Aids Muscle Health", "Traditional Recipe", "No Preservatives"],
     usage: ["Mix with rice and ghee", "Pair with pesarattu", "Add to dosa batter mix"],
     shelfLife: "3 months",
+    weight: 200,
     featured: true,
   },
 ];

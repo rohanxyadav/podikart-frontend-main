@@ -3,15 +3,14 @@ import { Product } from "@/data/products";
 
 export interface CartItem {
   product: Product;
-  pack: "trial" | "value";
   quantity: number;
 }
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product, pack: "trial" | "value", quantity?: number) => void;
-  removeFromCart: (productId: string, pack: "trial" | "value") => void;
-  updateQuantity: (productId: string, pack: "trial" | "value", quantity: number) => void;
+  addToCart: (product: Product, quantity?: number) => void;
+  removeFromCart: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -22,33 +21,33 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addToCart = (product: Product, pack: "trial" | "value", quantity = 1) => {
+  const addToCart = (product: Product, quantity = 1) => {
     setItems((prev) => {
       const productId = (product as any)._id || product.id;
-      const existing = prev.find((i) => ((i.product as any)._id || i.product.id) === productId && i.pack === pack);
+      const existing = prev.find((i) => ((i.product as any)._id || i.product.id) === productId);
       if (existing) {
         return prev.map((i) =>
-          ((i.product as any)._id || i.product.id) === productId && i.pack === pack
+          ((i.product as any)._id || i.product.id) === productId
             ? { ...i, quantity: i.quantity + quantity }
             : i
         );
       }
-      return [...prev, { product, pack, quantity }];
+      return [...prev, { product, quantity }];
     });
   };
 
-  const removeFromCart = (productId: string, pack: "trial" | "value") => {
-    setItems((prev) => prev.filter((i) => !(((i.product as any)._id || i.product.id) === productId && i.pack === pack)));
+  const removeFromCart = (productId: string) => {
+    setItems((prev) => prev.filter((i) => !(((i.product as any)._id || i.product.id) === productId)));
   };
 
-  const updateQuantity = (productId: string, pack: "trial" | "value", quantity: number) => {
+  const updateQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(productId, pack);
+      removeFromCart(productId);
       return;
     }
     setItems((prev) =>
       prev.map((i) =>
-        ((i.product as any)._id || i.product.id) === productId && i.pack === pack ? { ...i, quantity } : i
+        ((i.product as any)._id || i.product.id) === productId ? { ...i, quantity } : i
       )
     );
   };
@@ -57,7 +56,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = items.reduce((sum, i) => {
-    const price = i.pack === "trial" ? i.product.trialPrice : i.product.valuePrice;
+    const price = i.product.trialPrice; // trialPrice is now Discounted Price
     return sum + price * i.quantity;
   }, 0);
 

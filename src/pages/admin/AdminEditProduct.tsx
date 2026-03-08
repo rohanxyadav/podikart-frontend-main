@@ -24,8 +24,9 @@ export default function AdminEditProduct() {
         shortDescription: "",
         description: "",
         category: "",
-        trialPrice: "",
-        valuePrice: "",
+        trialPrice: "", // Discounted Price
+        valuePrice: "", // Original Price
+        weight: "",
         ingredients: "",
         benefits: "",
         usage: "",
@@ -75,6 +76,7 @@ export default function AdminEditProduct() {
                 category: product.category,
                 trialPrice: product.trialPrice.toString(),
                 valuePrice: product.valuePrice.toString(),
+                weight: (product.weight || "").toString(),
                 ingredients: Array.isArray(product.ingredients) ? product.ingredients.join(', ') : product.ingredients,
                 benefits: Array.isArray(product.benefits) ? product.benefits.join(', ') : product.benefits,
                 usage: Array.isArray(product.usage) ? product.usage.join(', ') : product.usage,
@@ -238,13 +240,17 @@ export default function AdminEditProduct() {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <Label htmlFor="trialPrice">Trial Price (₹)</Label>
+                                <Label htmlFor="trialPrice">Discounted price (₹)</Label>
                                 <Input id="trialPrice" type="number" value={formData.trialPrice} onChange={handleChange} placeholder="100" required className="mt-1.5" />
                             </div>
                             <div>
-                                <Label htmlFor="valuePrice">Value Price (₹)</Label>
+                                <Label htmlFor="valuePrice">Original price (₹)</Label>
                                 <Input id="valuePrice" type="number" value={formData.valuePrice} onChange={handleChange} placeholder="150" required className="mt-1.5" />
                             </div>
+                        </div>
+                        <div>
+                            <Label htmlFor="weight">Weight (Grams)</Label>
+                            <Input id="weight" type="number" value={formData.weight} onChange={handleChange} placeholder="e.g. 500" required className="mt-1.5" />
                         </div>
                         <div>
                             <Label htmlFor="shelfLife">Shelf Life</Label>
