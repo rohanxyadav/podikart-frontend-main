@@ -13,6 +13,7 @@ const sidebarLinks = [
   { label: "Orders", to: "/admin/orders", icon: ShoppingCart },
   { label: "Customers", to: "/admin/users", icon: Users },
   { label: "Banners", to: "/admin/banners", icon: Image },
+  { label: "Blogs", to: "/admin/blogs", icon: LayoutDashboard },
   { label: "Contacts", to: "/admin/contacts", icon: Mail },
   { label: "Partners", to: "/admin/partners", icon: Tag }
 ];

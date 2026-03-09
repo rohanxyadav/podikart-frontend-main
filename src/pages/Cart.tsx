@@ -24,6 +24,7 @@ export default function Cart() {
           quantity: i.quantity,
           image: i.product.image,
           price: i.product.trialPrice, // Discounted Price
+          pack: `Trial Pack (${i.product.weight}g)`,
           product: (i.product as any)._id || i.product.id
         })),
         shippingAddress: {

@@ -20,6 +20,8 @@ import Account from "./pages/Account";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Partner from "./pages/Partner";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 import NotFound from "./pages/NotFound";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -32,6 +34,8 @@ import AdminEditProduct from "./pages/admin/AdminEditProduct";
 import AdminContacts from "./pages/admin/AdminContacts";
 import AdminPartners from "./pages/admin/AdminPartners";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminBlogs from "./pages/admin/AdminBlogs";
+import BlogForm from "./pages/admin/BlogForm";
 import ReturnRefundPolicy from "./pages/policies/ReturnRefundPolicy";
 import DeliveryPolicy from "./pages/policies/DeliveryPolicy";
 import PrivacyPolicy from "./pages/policies/PrivacyPolicy";
@@ -58,6 +62,8 @@ const App = () => (
                 <Route path="/cart" element={<><Navbar /><Cart /><Footer /></>} />
                 <Route path="/about" element={<><Navbar /><About /><Footer /></>} />
                 <Route path="/contact" element={<><Navbar /><Contact /><Footer /></>} />
+                <Route path="/blogs" element={<><Navbar /><Blogs /><Footer /></>} />
+                <Route path="/blog/:id" element={<><Navbar /><BlogDetail /><Footer /></>} />
                 <Route path="/partner" element={<><Navbar /><Partner /><Footer /></>} />
                 <Route path="/login" element={<><Navbar /><Login /><Footer /></>} />
                 <Route path="/signup" element={<><Navbar /><Signup /><Footer /></>} />
@@ -79,6 +85,9 @@ const App = () => (
                   <Route path="banners" element={<AdminBanners />} />
                   <Route path="orders" element={<AdminOrders />} />
                   <Route path="users" element={<AdminUsers />} />
+                  <Route path="blogs" element={<AdminBlogs />} />
+                  <Route path="blogs/new" element={<BlogForm />} />
+                  <Route path="blogs/edit/:id" element={<BlogForm />} />
                   <Route path="contacts" element={<AdminContacts />} />
                   <Route path="partners" element={<AdminPartners />} />
                 </Route>
